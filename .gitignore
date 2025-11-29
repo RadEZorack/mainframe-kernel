@@ -1,0 +1,24 @@
+# Rust
+/target
+**/*.rs.bk
+
+# Cargo
+.cargo/config.toml
+Cargo.lock
+
+# Generated binaries
+*.bin
+*.elf
+*.efi
+*.iso
+*.img
+
+# QEMU logs
+qemu.log
+
+# macOS junk
+.DS_Store
+
+# Parallels or VM build output
+disk.raw
+EFI/BOOT/BOOTAA64.EFI

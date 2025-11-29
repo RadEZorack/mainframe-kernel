@@ -1,8 +1,14 @@
 #![no_std]
-#![feature(naked_functions)]
-#![feature(format_args_nl)]
-#![feature(panic_info_message)]
 
 pub mod panic;
 pub mod uart;
 pub mod arch;
+
+use crate::uart::uart_puts;
+
+#[no_mangle]
+pub extern "C" fn kernel_main() -> ! {
+    uart_puts("🌟 J’SOS ARM64 Kernel Booted Successfully!\n");
+
+    loop {}
+}
