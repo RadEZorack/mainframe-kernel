@@ -2,11 +2,13 @@ ENTRY(_start)
 
 SECTIONS
 {
-    . = 0x40000000;   /* <- IMPORTANT: match QEMU's load address */
-    . = ALIGN(4K);
+    . = 0x40000000;      /* QEMU virt loads -kernel here */
 
+    /* ------------------------------------------------- */
+    /* TEXT: pull in entry code + all kernel code        */
+    /* ------------------------------------------------- */
     .text : ALIGN(4K) {
-        KEEP(*(.text._start))
+        KEEP(*(.text._start))   /* <- pulls entry.S */
         *(.text*)
     }
 
@@ -23,5 +25,8 @@ SECTIONS
         *(COMMON)
     }
 
+    /* ------------------------------------------------- */
+    /* Start heap AFTER bss                              */
+    /* ------------------------------------------------- */
     _heap_start = ALIGN(4K);
 }
