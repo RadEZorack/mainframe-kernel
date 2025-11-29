@@ -6,8 +6,9 @@ fn uart_reg(offset: u64) -> *mut u8 {
 
 pub fn uart_putc(c: u8) {
     unsafe {
-        // Wait until UART is ready
-        while core::ptr::read_volatile(uart_reg(0x18)) & 0x20 != 0 {}
+        // Wait until TX FIFO not full
+        while core::ptr::read_volatile(uart_reg(0x18)) & (1 << 5) != 0 {}
+
         core::ptr::write_volatile(uart_reg(0x00), c);
     }
 }

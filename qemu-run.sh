@@ -17,10 +17,13 @@ fi
 
 echo "🟢 Booting kernel: $KERNEL"
 
-qemu-system-aarch64 \
+QEMU=$(which qemu-system-aarch64)
+
+/usr/bin/env "$QEMU" \
   -machine virt \
   -cpu cortex-a72 \
   -m 1024 \
-  -serial null \
-  -serial stdio \
-  -kernel "$KERNEL"
+  -kernel "$KERNEL" \
+  -nographic \
+  -serial mon:stdio \
+  -serial null
