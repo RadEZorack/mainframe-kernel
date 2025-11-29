@@ -2,7 +2,6 @@
     .globl _start
 
 _start:
-    // Load address of stack_top relative to PC
     adrp x0, stack_top
     add  x0, x0, :lo12:stack_top
     mov  sp, x0

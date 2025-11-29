@@ -1,17 +1,18 @@
 #![no_std]
 #![no_main]
 
-mod arch;      // <-- this brings in the aarch64 module
-mod uart;
 mod panic;
+mod uart;
 mod print;
-mod virtio_gpu;
+mod arch;
 
-use uart::uart_puts;
+use crate::uart::{uart_init, uart_puts};
 
 #[no_mangle]
 pub extern "C" fn kernel_main() -> ! {
-    uart::init();
-    uart_puts("KERNEL MAIN REACHED\n");
+    uart_init();
+    uart_puts("\n\n=== MAINFRAME KERNEL BOOTED ===\n");
+    uart_puts("Hello from Rust kernel_main!\n");
+
     loop {}
 }
