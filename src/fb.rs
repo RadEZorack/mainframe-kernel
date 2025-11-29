@@ -1,16 +1,18 @@
-/// Paint the default RAM framebuffer bright blue so we know the kernel ran.
+/// Hardcoded RAMFB base on QEMU macOS ARM build.
+///
+/// QEMU maps ramfb memory at 0x4000_0000 for `virt` machines.
+const RAMFB_BASE: usize = 0x4000_0000;
+
+const WIDTH: usize = 640;
+const HEIGHT: usize = 480;
+
 pub fn ramfb_blue_screen() {
-    // RAMFB default base on QEMU virt board when `-device ramfb`.
-    const FB_BASE: *mut u32 = 0x40000 as *mut u32;
-    const WIDTH: usize = 640;
-    const HEIGHT: usize = 480;
+    let fb_ptr = RAMFB_BASE as *mut u32;
+    let total_pixels = WIDTH * HEIGHT;
 
     unsafe {
-        for y in 0..HEIGHT {
-            for x in 0..WIDTH {
-                let pixel = FB_BASE.add(y * WIDTH + x);
-                *pixel = 0x0000_00FF; // BGRA little-endian: solid blue
-            }
+        for i in 0..total_pixels {
+            core::ptr::write_volatile(fb_ptr.add(i), 0x000000FF);
         }
     }
 }
