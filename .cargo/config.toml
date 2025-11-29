@@ -3,5 +3,7 @@ target = "aarch64-unknown-none"
 
 [target.aarch64-unknown-none]
 rustflags = [
-  "-C", "link-arg=-Tlinker.ld"
+  "-C", "link-arg=-Tlinker.ld",
+  # comment out binary output until MMU enabled:
+  # "-C", "link-arg=--oformat=binary"
 ]

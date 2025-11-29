@@ -15,7 +15,6 @@ impl Write for UartWriter {
 fn panic(info: &PanicInfo) -> ! {
     uart_puts("KERNEL PANIC!\n");
 
-    // Location (file + line)
     if let Some(loc) = info.location() {
         uart_puts("Location: ");
         uart_puts(loc.file());
@@ -27,15 +26,12 @@ fn panic(info: &PanicInfo) -> ! {
     }
 
     uart_puts("Message: ");
-
     let msg = info.message();
     let mut w = UartWriter;
 
-    // Fast path: static string messages
     if let Some(s) = msg.as_str() {
         uart_puts(s);
     } else {
-        // Fallback: Debug formatting for arbitrary panic messages
         let _ = write!(w, "{:?}", msg);
     }
 
