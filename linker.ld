@@ -1,28 +1,27 @@
 ENTRY(_start)
 
-SECTIONS {
-    . = 0x80000;
+SECTIONS
+{
+    . = 0x40000000;   /* <- IMPORTANT: match QEMU's load address */
+    . = ALIGN(4K);
 
-    .text : {
-        *(.text._start)
+    .text : ALIGN(4K) {
+        KEEP(*(.text._start))
         *(.text*)
     }
 
-    .rodata : {
+    .rodata : ALIGN(4K) {
         *(.rodata*)
     }
 
-    .data : {
+    .data : ALIGN(4K) {
         *(.data*)
     }
 
-    .bss : {
+    .bss (NOLOAD) : ALIGN(4K) {
         *(.bss*)
-        . = ALIGN(8);
+        *(COMMON)
     }
 
-    /DISCARD/ : {
-        *(.comment*)
-        *(.eh_frame*)
-    }
+    _heap_start = ALIGN(4K);
 }
